@@ -2,6 +2,7 @@
 ## 更新日志
 [24/09/20] 我们更新了对`markdown`文件的粗清洗管道
 <details><summary>展开日志</summary>
+
 非常高兴迎来`edcp`库的第一次功能更新，本次更新的是对`markdown`文件的粗清洗管道。
 
 具体的，当我们使用[MinerU](https://github.com/opendatalab/MinerU)将`PDF`转换为`markdown`文件时，会产生很多非正文内容，包括书本简介、出版社信息编写规范等，所以我们尝试使用`LLM`来进行清洗。
@@ -25,9 +26,9 @@
 ```
 
 各个文件的主要作用如下：
-`LLMFilter.py`：Transformers框架批推理流程。
-`VLLMFilter.py`：VLLM框架批推理流程。
-`charreplace.py`：需要对文本进行替换操作的正则表达式与字符库。
-`pipelines.py`：处理流程入口。
-`template.py`：LLM过滤提示词模板。
-`utils.py`：一些常用的工具函数。
+ - `LLMFilter.py`：Transformers框架批推理流程。
+ - `VLLMFilter.py`：VLLM框架批推理流程。
+ - `charreplace.py`：需要对文本进行替换操作的正则表达式与字符库。
+ - `pipelines.py`：处理流程入口。
+ - `template.py`：LLM过滤提示词模板。
+ - `utils.py`：一些常用的工具函数。

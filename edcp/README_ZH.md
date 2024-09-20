@@ -1,4 +1,5 @@
-##更新日志
+# EDCP
+## 更新日志
 [24/09/20] 我们更新了对`markdown`文件的粗清洗管道
 <details><summary>展开日志</summary>
 非常高兴迎来`edcp`库的第一次功能更新，本次更新的是对`markdown`文件的粗清洗管道。

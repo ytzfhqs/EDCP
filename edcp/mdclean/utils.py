@@ -1,9 +1,8 @@
 import os
 from io import StringIO
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Tuple
 
 import re
-import json
 from loguru import logger
 from datasets import Dataset
 
@@ -20,26 +19,11 @@ def unmark_element(element, stream=None):
     return stream.getvalue()
 
 
-def save_json(paths:str, datas: List[Dict[Any, Any]]) -> None:
-    """
-    保存json文件
-    """
-    with open(paths, "w", encoding="utf-8") as json_file:
-        json.dump(datas, json_file, indent=2, ensure_ascii=False)
-
-
-def read_json(paths):
-    """
-    读取json文件
-    """
-    with open(paths, "r", encoding="UTF-8") as f:
-        load_dict = json.load(f)
-    return load_dict
-
-def split_text(s: str, split_char='\n') -> List[str]:
+def split_text(s: str, split_char="\n") -> List[str]:
     """将字符串按split_char分割，存放到List中"""
-    lines = [line.rstrip() for line in s.split(split_char) if line]
+    lines = [line.rstrip() for line in s.split(split_char) if line.strip()]
     return lines
+
 
 def remove_and_replace(
     text: str,
@@ -63,18 +47,23 @@ def remove_and_replace(
         for pattern, replacement in replacements:
             text = re.sub(pattern, replacement, text, flags=re.MULTILINE)
     return text
-def filter_info(op_name: str, og_num: int, new_num: int):
+
+
+def filter_info(op_name: str, og_num: int, new_num: int, file_name: str = None):
     """
     计算过滤前后样本数量及比例
     Args:
         op_name: 操作名称
         og_num: 过滤前样本数量
         new_num: 过滤后样本数量
-
+        file_name: 当前处理文件的名称
     Returns:
 
     """
     percentage = new_num / og_num * 100
+    if file_name is not None:
+        logger.info(f"File name: {file_name}")
+    logger.info(f"Start {op_name}")
     logger.info(f"The number of samples before {op_name} is {og_num}")
     logger.info(f"The number of samples after {op_name} is {new_num}")
     logger.info(f"The proportion of data retained is {percentage:.2f}%")
@@ -118,14 +107,41 @@ def search_file_suffix(directory: str, suffix: str):
     Returns:
 
     """
-    md_files = []
+    suffix_files = []
     for root, dirs, files in os.walk(directory):
         for file in files:
             if file.endswith(suffix):
-                md_files.append(os.path.join(root, file))
-    return md_files
+                suffix_files.append(os.path.join(root, file))
+    return suffix_files
 
 
 def list2dataset(lst: List[Dict[str, str]]) -> Dataset:
     """将List变为datasets格式"""
     return Dataset.from_list(lst)
+
+
+def save_txt(string_list: List[str], file_path: str):
+    with open(file_path, 'w', encoding='utf-8') as file:
+        for item in string_list:
+            file.write(item + '\n')
+
+
+def filename_add_suffix(file_path, suffix):
+    """
+    在给定的文件路径的文件名部分添加指定的后缀。
+
+    参数:
+    file_path (str): 原始文件路径。
+    suffix (str): 要添加到文件名的后缀。
+
+    返回:
+    str: 添加后缀后的新的文件路径。
+    """
+    # 分离目录和文件名
+    dir_name, file_name = os.path.split(file_path)
+    # 分离文件名和扩展名
+    name_only, extension = os.path.splitext(file_name)
+    # 创建新的文件名
+    new_file_name = f"{name_only}_{suffix}{extension}"
+    # 合并目录和新的文件名
+    return os.path.join(dir_name, new_file_name)

@@ -58,8 +58,3 @@ class ChatModel:
             generated_ids_batch, skip_special_tokens=True
         )
         return response
-
-
-if __name__ == "__main__":
-
-    print(res)

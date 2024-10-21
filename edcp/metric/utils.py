@@ -34,8 +34,12 @@ def remove_puncs(text: str) -> str:
     return text
 
 
-def split_word(sentence: str) -> Tuple[str, List[str], List[str]]:
+def split_word(
+    sentence: str, enhance_med: bool = False
+) -> Tuple[str, List[str], List[str]]:
     """分词操作"""
+    if enhance_med:
+        jieba.load_userdict('medical_words.txt')
     # 去除所有标点符号
     no_pinc_text = remove_puncs(sentence)
     # 分词操作

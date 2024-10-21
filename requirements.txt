@@ -1,0 +1,14 @@
+transformers
+datasets
+accelerate
+pydantic
+loguru
+fasttext
+mpire
+datasketch
+jionlp
+tqdm
+rbloom
+nltk
+numpy
+pandas

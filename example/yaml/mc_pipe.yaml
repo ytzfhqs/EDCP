@@ -1,4 +1,7 @@
-## 用于重要性采样的书籍数据变量或json文件路径
+## 需要进行评分的文本json文件路径
+data_or_filepath: None
+
+## 用于重要性采样的json文件路径
 book_data_or_path:
   - name: msdmanuals
     file_path: spider_med/msdmanuals.json
@@ -24,3 +27,5 @@ text_column: text
 idx_column: id_int
 ## inHash中构造哈希值所用哈希函数个数
 num_perm: 256
+## 结果文件保存路径
+res_save_path: data.json

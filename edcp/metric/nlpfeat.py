@@ -108,6 +108,8 @@ class NlpFeat:
         )
         simple_dict["mean_word_length"] = si.mean_word_length()
         simple_dict["curly_bracket"] = si.curly_bracket()
+        simple_dict["word_count"] = si.word_count()
+        simple_dict["num_words"] = si.num_words()
         return simple_dict
 
     @staticmethod

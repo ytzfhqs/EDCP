@@ -5,7 +5,7 @@ md_path: edcp/
 llm_model_path: edcp/Qwen2.5-med-book-main-classification
 ## 用于统计token数量的LLM路径
 token_cont_model: edcp/Qwen2.5-7B-Instruct
-## token数量的大致范围
+## 单样本token数量的大致范围
 near_tokens: 1024
 ## 用于过滤非正文样本的方法，chat为通用因果模型，cls为专用分类模型
 process_method: cls

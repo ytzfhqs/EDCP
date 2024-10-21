@@ -5,7 +5,7 @@ from . import utils
 from .nlpfeat import NlpFeat
 from .calppl import CPPl
 from .minhash import CalMinHash
-from ..tool import read_json
+from ..tool import read_json, save_json
 from .mcdict import McDict
 from .language import IdentLanguage
 from .importance import ImportFeat
@@ -16,7 +16,7 @@ class MetricProcess:
     def __init__(
         self,
         data_or_filepath: Union[str, List[Dict[str, Any]]],
-        book_data_or_path: Union[str, List[Dict[str, Any]]],
+        book_data_or_path: Union[Dict[str, List[Dict[str, Any]]], List[Dict[str, str]]],
         wordgram_model_path: List[Dict[str, str]],
         save_wordgram_model_dir: Optional[str],
         llm_model_path: str,
@@ -24,6 +24,7 @@ class MetricProcess:
         text_column: str,
         idx_column: str,
         num_perm: int,
+        res_save_path: str
     ):
         """
         MetricProcess初始化方法
@@ -55,6 +56,8 @@ class MetricProcess:
             save_wordgram_model_dir,
         )
 
+        self.res_save_path = res_save_path
+
     def merger_cal(self, single_sample: Dict[str, Any]) -> McDict[str, Any]:
         return utils.cat_dict(
             # 原数据
@@ -74,4 +77,5 @@ class MetricProcess:
     def forward(self):
         for idx in range(len(self.data)):
             self.data[idx] = self.merger_cal(self.data[idx])
+        save_json(self.res_save_path, self.data)
         return self.data

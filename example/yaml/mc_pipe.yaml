@@ -1,0 +1,26 @@
+## 用于重要性采样的书籍数据变量或json文件路径
+book_data_or_path:
+  - name: msdmanuals
+    file_path: spider_med/msdmanuals.json
+  - name: novels
+    file_path: C:/Users/haoqingsong/Desktop/python/pre_data.json
+
+## 重要性采样书籍数据训练的wordgram模型路径，传入此参数时，book_data_or_path将被忽略
+wordgram_model_path:
+  - name: msdmanuals(2-gram)
+    model_path: wordgram_model/msdmanuals(2-gram).pkl
+  - name: msdmanuals(3-gram)
+    model_path: wordgram_model/msdmanuals(3-gram).pkl
+
+## 仅在传入book_data_or_path时有效。保存书籍数据训练的wordgram模型路径，若为None，则不保存
+save_wordgram_model_path: example/wordgram_model
+## 用于计算PPL的通用领域模型
+llm_model_path: edcp/Qwen2.5-7B-Instruct
+## 用于识别语言的Fasttext模型路径
+fasttext_model_path: edcp/fasttext-med-en-zh-identification/model.bin
+## Dict中文本的Key
+text_column: text
+## Dict中样本ID的Key
+idx_column: id_int
+## inHash中构造哈希值所用哈希函数个数
+num_perm: 256

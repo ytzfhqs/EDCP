@@ -1,0 +1,17 @@
+# MdProcess
+## 包含需要处理markdown文件的主目录
+md_path: edcp/
+## 用于过滤非正文样本的LLM路径
+llm_model_path: edcp/Qwen2.5-med-book-main-classification
+## 用于统计token数量的LLM路径
+token_cont_model: edcp/Qwen2.5-7B-Instruct
+## token数量的大致范围
+near_tokens: 1024
+## 用于过滤非正文样本的方法，chat为通用因果模型，cls为专用分类模型
+process_method: cls
+## 批处理大小
+batch_size: 8
+## 结果文件保存目录
+save_path: data.json
+## 是否保存中间结果文件
+save_middle: true

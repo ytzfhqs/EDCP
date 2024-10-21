@@ -76,6 +76,8 @@
  - `template.py`：LLM过滤提示词模板。
  - `utils.py`：一些常用的工具函数。
 
+</details>
+
 ## 如何使用
 
 ### 安装依赖

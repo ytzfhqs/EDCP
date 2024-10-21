@@ -73,6 +73,8 @@ The main roles of each file are as follows:
  - `utils.py`: Common utility functions.
  - `md_pipe_demo.py`: Tests for the key functions above, along with usage examples.
 
+</details>
+
 ## How to Use
 
 ### Install Dependencies

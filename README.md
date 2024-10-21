@@ -1,6 +1,6 @@
-# Easy-Data-Clean-Pipeline
+![# Easy-Data-Clean-Pipeline](assets/logo.png)
 
-[[English](README.md) | 中文]
+[English | [中文](README_ZH.md)]
 
 **A lightweight toolkit for cleaning Chinese corpora.**
 

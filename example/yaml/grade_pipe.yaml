@@ -1,0 +1,17 @@
+## 需要进行llm评分的文本json文件路径
+data_or_filepath: None
+
+## llm的名称
+model_name: qwen-plus
+## llm的api key
+api_key: sk-72da5a98be2a40bda15c043db6cc48a5
+## 调用Qwen系列模型所需提供的base_url
+base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+## 提示词种类，可选项为'domain'（领域类，需要提供domain）, 'general'（通用类，domain为None）
+prompt_type: domain
+## 领域名词
+domain: 医学
+## 保存结果文件的路径
+res_save_path: data_grade.json
+## Dict中文本的Key
+text_column: text

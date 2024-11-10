@@ -1,7 +1,13 @@
 import os
 import json
 import pickle
+import importlib.util
+import importlib.metadata
 from typing import List, Dict, Any
+
+
+def _is_package_available(name: str) -> bool:
+    return importlib.util.find_spec(name) is not None
 
 
 def save_json(paths: str, datas: List[Dict[Any, Any]]) -> None:

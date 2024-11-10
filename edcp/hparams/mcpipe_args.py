@@ -42,3 +42,6 @@ class McPipeArgs:
             "help": "Number of hash functions used to construct hashes in MinHash"
         },
     )
+    res_save_path: str = field(
+        default="data_metric.json", metadata={"help": "Result file save path"}
+    )

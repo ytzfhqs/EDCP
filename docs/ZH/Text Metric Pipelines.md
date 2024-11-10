@@ -48,7 +48,7 @@
 
 ## 配置文件
 
-- 本项目采用`yaml`配置文件传参，具体可参照[edcp/example/yaml/mc_pipe.yaml](https://github.com/ytzfhqs/EDCP/blob/main/example/yaml/md_pipe.yaml)文件。
+- 本管道采用`yaml`配置文件传参，具体可参照[example/yaml/mc_pipe.yaml](https://github.com/ytzfhqs/EDCP/blob/main/example/yaml/md_pipe.yaml)文件。
 
 ```yaml
 ## 需要进行评分的文本json文件路径
@@ -160,7 +160,7 @@ res_save_path: 'data_metric.json'
 
 ## 使用示例
 
-使用示例可参照[edcp/example/mc_pipe_demo.py](https://github.com/ytzfhqs/EDCP/blob/main/example/mc_pipe_demo.py)文件，以下是一个简单实现：
+- 使用示例可参照[edcp/example/mc_pipe_demo.py](https://github.com/ytzfhqs/EDCP/blob/main/example/mc_pipe_demo.py)文件，以下是一个简单实现：
 
 ```python
 from typing import List, Dict, Any

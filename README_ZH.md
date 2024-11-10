@@ -35,9 +35,13 @@
 
 ## 更新日志
 
-[24/10/21] 完成文本数据评分管道搭建，优化`markdown`文件清洗管道
+[24/11/10]完成`LLM`文本质量评分管道的搭建，优化文本特征计算管道
 
-距离上次更新已经过去了1个月，在这1个月中我们完成了文本数据的评分管道搭建，优化了对`markdown`文件的清洗管道。同时，我们还在`HuggingFace`上上传了两个分类模型：[Qwen2.5-med-book-main-classification](https://huggingface.co/ytzfhqs/Qwen2.5-med-book-main-classification)和[fasttext-med-en-zh-identification](https://huggingface.co/ytzfhqs/fasttext-med-en-zh-identification)。其中，[Qwen2.5-med-book-main-classification](https://huggingface.co/ytzfhqs/Qwen2.5-med-book-main-classification)用于将[MinerU](https://github.com/opendatalab/MinerU)转换后的`markdown`本文进行正文与非正文的分类，相较于通用`LLM`模型，速度加快10倍，并且对医疗类文本正文与非正文的分类精度更高。[fasttext-med-en-zh-identification](https://huggingface.co/ytzfhqs/fasttext-med-en-zh-identification)用于判断文本属于英文还是中文，并给出置信度。具体的数据集构建流程和模型训练细节可以在对应模型`HuggingFace`的`Model card`中查看。
+我们完成了利用LLM文本质量评分管道的搭建，主要支持`ChatGLM4`、`Qwen`、`ChatGPT4`的`API`调用以及开源模型`Qwen2.5`的调用，同时优化了文本特征计算管道。关于文本质量评分的`Prompt`，参照了[HuggingFaceFW/fineweb-edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu)、[BAAI/IndustryCorpus2](https://huggingface.co/datasets/BAAI/IndustryCorpus2)和[opencsg/chinese-fineweb-edu-v2](https://huggingface.co/datasets/opencsg/chinese-fineweb-edu-v2#chinese)的质量评分`Prompt`，并将提示词分为了更倾向于领域知识的`domain`类，以及用于通用文本的`general`类。遵循一贯的作风，所有管道均支持多进程推理。
+
+[24/10/21] 完成文本特征计算管道搭建，优化`markdown`文件清洗管道
+
+距离上次更新已经过去了1个月，在这1个月中我们完成了特征计算管道搭建，优化了对`markdown`文件的清洗管道。同时，我们还在`HuggingFace`上上传了两个分类模型：[Qwen2.5-med-book-main-classification](https://huggingface.co/ytzfhqs/Qwen2.5-med-book-main-classification)和[fasttext-med-en-zh-identification](https://huggingface.co/ytzfhqs/fasttext-med-en-zh-identification)。其中，[Qwen2.5-med-book-main-classification](https://huggingface.co/ytzfhqs/Qwen2.5-med-book-main-classification)用于将[MinerU](https://github.com/opendatalab/MinerU)转换后的`markdown`本文进行正文与非正文的分类，相较于通用`LLM`模型，速度加快10倍，并且对医疗类文本正文与非正文的分类精度更高。[fasttext-med-en-zh-identification](https://huggingface.co/ytzfhqs/fasttext-med-en-zh-identification)用于判断文本属于英文还是中文，并给出置信度。具体的数据集构建流程和模型训练细节可以在对应模型`HuggingFace`的`Model card`中查看。
 
 本次更新是一次较为重要的更新，除了显性工作（数据的评分管道搭建），我们还对之前的代码进行了很多优化，包括但不仅限于尽可能遵循`HuggingFace`的代码风格、保证代码一致性、生产环境测试等一系列隐性工作。并且几乎所有功能模块都支持**多进程加速**，为了`edcp`库的易用性，我们编写了[用户文档](https://github.com/ytzfhqs/EDCP/tree/main/docs)，来帮助其他研究者了解和使用`edcp`库。
 

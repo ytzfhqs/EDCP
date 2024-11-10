@@ -19,9 +19,14 @@ class GradeProcess:
         text_column: str = "text",
     ):
         if "qwen" in model_name.lower():
-            from .chatmodel import ChatQwen
+            if "qwen2.5" in model_name.lower():
+                from .chatmodel import ChatQwen2_5
 
-            self.model = ChatQwen(model_name, api_key, base_url, text_column)
+                self.model = ChatQwen2_5(model_name, text_column)
+            else:
+                from .chatmodel import ChatQwen
+
+                self.model = ChatQwen(model_name, api_key, base_url, text_column)
         elif "glm" in model_name.lower():
             from .chatmodel import ChatGLM4
 
@@ -32,7 +37,7 @@ class GradeProcess:
             self.model = ChatGPT4(model_name, api_key, text_column)
         else:
             raise ValueError(
-                "Only api calls for Qwen, ChatGPT and ChatGLM series models are supported."
+                "Only api calls for Qwen, ChatGPT, ChatGLM and Qwen2.5 series models are supported."
             )
 
         if check_path_data(data_or_filepath) == "str":

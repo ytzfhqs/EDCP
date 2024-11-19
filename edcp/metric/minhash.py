@@ -58,17 +58,15 @@ class CalMinHash:
         else:
             return utils.cat_dict(single_sample, res_mid)
 
-    def forward(self, data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        for idx in range(len(data)):
-            data[idx] = self.do_process(data[idx])
-        return data
+    def forward(self) -> List[Dict[str, Any]]:
+        for idx in range(len(self.data)):
+            self.data[idx] = self.do_process(self.data[idx])
+        return self.data
 
-    def forward_pool(
-        self, data: List[Dict[str, Any]], num_proc: int
-    ) -> List[McDict[str, Any]]:
+    def forward_pool(self, num_proc: int) -> List[McDict[str, Any]]:
         with WorkerPool(n_jobs=num_proc, start_method="spawn") as pool:
             cmh_res: List[Dict[str, float]] = pool.map(
-                self.do_process, data, progress_bar=True
+                self.do_process, self.data, progress_bar=True
             )
-        data = utils.cat_dict_with_pool(data, cmh_res)
+        data = utils.cat_dict_with_pool(self.data, cmh_res)
         return data

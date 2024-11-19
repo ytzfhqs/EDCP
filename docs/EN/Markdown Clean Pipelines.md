@@ -1,4 +1,4 @@
-# Markdown Cleaning Pipelines
+# Markdown Clean Pipelines
 
 ## Table of Contents
 

@@ -1,7 +1,9 @@
+from multiprocessing import cpu_count
 from typing import List, Dict, Any
 
 
 from mpire import WorkerPool
+from tqdm import tqdm
 from datasketch import MinHash, MinHashLSH
 from . import utils
 from .mcdict import McDict
@@ -24,21 +26,69 @@ class CalMinHash:
         logger.info(
             "Initialise MinHashLSH with thresholds of 0.7, 0.8 and 0.9 respectively."
         )
-        self.ml_lsh0_7 = MinHashLSH(threshold=0.7, num_perm=num_perm)
-        self.ml_lsh0_8 = MinHashLSH(threshold=0.8, num_perm=num_perm)
-        self.ml_lsh0_9 = MinHashLSH(threshold=0.9, num_perm=num_perm)
-        self.mh_dict = {}
-        logger.info("Update MinHash key-value pairs")
-        self._update_mh()
+        self.ml_lsh0_7: MinHashLSH
+        self.ml_lsh0_8: MinHashLSH
+        self.ml_lsh0_9: MinHashLSH
+        self.mh_dict: Dict[Any, Any]
+
+        # 尝试多进程
+        try:
+            logger.info(f"Update MinHash key-value pairs with parallel computing using {cpu_count()} cpu cores")
+            self._update_mh_pool()
+        # 单进程
+        except:
+            logger.info("Update MinHash key-value pairs")
+            self._update_mh()
         logger.info("Updates MinHash key-value pairs completed")
 
+    def _init_mhlsh(self):
+        """初始化MinHashLSH类以及键值对"""
+        self.ml_lsh0_7 = MinHashLSH(threshold=0.7, num_perm=self.num_perm)
+        self.ml_lsh0_8 = MinHashLSH(threshold=0.8, num_perm=self.num_perm)
+        self.ml_lsh0_9 = MinHashLSH(threshold=0.9, num_perm=self.num_perm)
+        self.mh_dict: Dict[Any, Any] = {}
+
     def _update_mh(self):
-        mh = MinHash(num_perm=self.num_perm)
-        for d in self.data:
+        # 初始化MinHashLSH类
+        self._init_mhlsh()
+        for d in tqdm(self.data):
+            # 初始化MinHash类（为每个样本单独初始化MinHash类）
+            mh = MinHash(num_perm=self.num_perm)
             # 取分词后的词表
             _, words, _ = utils.split_word(d[self.text_column])
             for word in set(words):
                 mh.update(word.encode("utf-8"))
+            self.ml_lsh0_7.insert(d[self.idx_column], mh)
+            self.ml_lsh0_8.insert(d[self.idx_column], mh)
+            self.ml_lsh0_9.insert(d[self.idx_column], mh)
+            self.mh_dict[d[self.idx_column]] = mh
+
+    @staticmethod
+    def _word_encode(d, text_column):
+        encode_list = []
+        # 取分词后的词表
+        _, words, _ = utils.split_word(d[text_column])
+        for word in set(words):
+            encode_list.append(word.encode("utf-8"))
+        return encode_list
+
+    def _update_mh_pool(self):
+        # 初始化MinHashLSH类
+        self._init_mhlsh()
+        n_jobs = min(cpu_count(), len(self.data))
+        # 利用多进程快速编码
+        with WorkerPool(n_jobs=n_jobs, start_method="spawn") as pool:
+            we_res: List[List[str]] = pool.map(
+                self._word_encode,
+                [{"d": d, "text_column": self.text_column} for d in self.data],
+            )
+
+        # 整合结果
+        for we, d in zip(we_res, self.data):
+            # 初始化MinHash类（为每个样本单独初始化MinHash类）
+            mh = MinHash(num_perm=self.num_perm)
+            for e in we:
+                mh.update(e)
             self.ml_lsh0_7.insert(d[self.idx_column], mh)
             self.ml_lsh0_8.insert(d[self.idx_column], mh)
             self.ml_lsh0_9.insert(d[self.idx_column], mh)
@@ -65,8 +115,9 @@ class CalMinHash:
 
     def forward_pool(self, num_proc: int) -> List[McDict[str, Any]]:
         with WorkerPool(n_jobs=num_proc, start_method="spawn") as pool:
-            cmh_res: List[Dict[str, float]] = pool.map(
-                self.do_process, self.data, progress_bar=True
+            self.data: List[McDict[str, Any]] = pool.map_unordered(
+                self.do_process,
+                [{"single_sample": d} for d in self.data],
+                progress_bar=True
             )
-        data = utils.cat_dict_with_pool(self.data, cmh_res)
-        return data
+        return self.data
